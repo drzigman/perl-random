@@ -1,0 +1,6 @@
+[submodule "lib/glibc"]
+	path = lib/glibc
+	url = git://sourceware.org/git/glibc.git
+[submodule "lib/perl"]
+	path = lib/perl
+	url = git://perl5.git.perl.org/perl.git
