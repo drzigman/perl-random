@@ -11,19 +11,19 @@ int find_sequence_in_sample( char ** sample_sequence, int sample_sequence_size,
 
 int main( int argc, char *argv[] ) {
     if ( argc == 1 ) {
-        printf("usage: %s <generated random value 1> <value 2> ... <value 10>\n");
+        printf("usage: %s <starting seed> <generated random value 1> <value 2> ... <value 10>\n");
         return 1;
     }
 
-    int seed = 0;
-    int known_sequence_size = argc - 1;
-    int length_of_known_sequence = strlen(argv[1]);
+    int seed = atoi( argv[1] );
+    int known_sequence_size = argc - 2;
+    int length_of_known_sequence = strlen( argv[2] );
     char *known_sequence[known_sequence_size];
 
     int known_sequence_index;
     for( known_sequence_index = 0; known_sequence_index < known_sequence_size; known_sequence_index++ ) {
-        known_sequence[known_sequence_index] = calloc(strlen(argv[known_sequence_index + 1]), sizeof(char));
-        known_sequence[known_sequence_index] = argv[known_sequence_index + 1];
+        known_sequence[known_sequence_index] = calloc(strlen(argv[known_sequence_index + 2]), sizeof(char));
+        known_sequence[known_sequence_index] = argv[known_sequence_index + 2];
 
         if( length_of_known_sequence != strlen(known_sequence[known_sequence_index]) ) {
             printf("The percision of all known sequences must be the same.\n");
@@ -36,6 +36,7 @@ int main( int argc, char *argv[] ) {
 
     // Continue until I find the sequence
     while( 1 ) {
+        printf("Attempting to predict using seed %d\n", seed);
         sample_sequence = generate_sample_sequence(seed, sample_sequence_size, length_of_known_sequence);
 
         if( find_sequence_in_sample( sample_sequence, sample_sequence_size,
