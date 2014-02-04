@@ -5,6 +5,7 @@ use warnings;
 
 use String::MkPasswd qw(mkpasswd);
 use Parallel::ForkManager;
+use Term::ProgressBar;
 use Config;
 
 use Readonly;
@@ -30,9 +31,17 @@ my $known_password = $ARGV[1];
 
 my $pm = Parallel::ForkManager->new($NUM_PROCS);
 
-for(my $seed = $initial_seed; $seed < ($starting_time + $NUM_SEEDS_PER_PROC); $seed += $NUM_SEEDS_PER_PROC) {
-    my $pid = $pm->start and next;
+my $progress = Term::ProgressBar->new({
+    name  => 'Calculating',
+    count => ($starting_time - $initial_seed),
+    ETA   => 'linear',
+    minor => 1,
+});
 
+for(my $seed = $initial_seed; $seed < ($starting_time + $NUM_SEEDS_PER_PROC); $seed += $NUM_SEEDS_PER_PROC) {
+    $progress->update($NUM_SEEDS_PER_PROC);
+
+    my $pid = $pm->start and next;
 
         for(my $proc_seed = $seed; $proc_seed < ($seed + $NUM_SEEDS_PER_PROC); $proc_seed++) {
 
