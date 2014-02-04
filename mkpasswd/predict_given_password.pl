@@ -35,8 +35,8 @@ my $progress = Term::ProgressBar->new({
     name  => 'Calculating',
     count => ($starting_time - $initial_seed),
     ETA   => 'linear',
-    minor => 1,
 });
+$progress->minor(1);
 
 for(my $seed = $initial_seed; $seed < ($starting_time + $NUM_SEEDS_PER_PROC); $seed += $NUM_SEEDS_PER_PROC) {
     $progress->update($NUM_SEEDS_PER_PROC);
