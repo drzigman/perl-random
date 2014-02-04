@@ -36,11 +36,12 @@ my $progress = Term::ProgressBar->new({
     count => ($starting_time - $initial_seed),
     ETA   => 'linear',
 });
-$progress->minor(1);
+
+$pm -> run_on_finish ( sub {
+    $progress->update($NUM_SEEDS_PER_PROC);
+});
 
 for(my $seed = $initial_seed; $seed < ($starting_time + $NUM_SEEDS_PER_PROC); $seed += $NUM_SEEDS_PER_PROC) {
-    $progress->update($NUM_SEEDS_PER_PROC);
-
     my $pid = $pm->start and next;
 
         for(my $proc_seed = $seed; $proc_seed < ($seed + $NUM_SEEDS_PER_PROC); $proc_seed++) {
